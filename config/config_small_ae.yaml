@@ -1,0 +1,47 @@
+# Data params
+data:
+  source: 'mvtec-ad'   # only mvtec-ad loader yet 
+  num_workers: 3
+
+arch:
+  use_bmw_enc_dec: False
+  embedding_size: 8
+  cnn_enc:
+    output_size: 8
+    input_height: 150 #200
+    input_width: 150 #400
+    in_channels: 3
+    channel_mult: 16
+    kernel_size: 3 #4
+    stride: 1
+    padding: 1
+  cnn_dec:
+    fc_output_dim: 512
+    output_height: 150 #200
+    output_width: 150 #400
+    out_channels: 3
+    channel_mult: 16
+    kernel_size: 30 #should be output_height / 5 because 5 is the number of layers in the decoder
+    kernel_size_factor: 1   #factor width/height
+    stride: 1
+    padding: 0
+  vaegan:
+    base: 32 # Image dimensions. Must be a power of 2
+    latent_dim: 128 # latend dimensionality
+    channels: 3
+
+exp:
+  title: ''
+  run_id: '005'
+  model: "AE" # Which architecture to use [AE | VAE | VAEGAN]
+  logging: False   # Logging to MlFlow
+  batch_size: 16 #input batch size for training
+  no_cuda: False # enables CUDA training
+  seed: 42 # random seed
+  log_interval: 10 # how many batches to wait before logging training status
+  results_path: "results" # where to store images
+  max_epochs: 200  # Total number of training epochs to perform.
+  check_val_every_n_epoch: 1
+  lr: 0.001
+  early_stopping_patience: 50  #  Number of epochs to wait for early stopping, used if early_stopping is True
+  gpus: '1'
